@@ -1,4 +1,4 @@
-﻿<?php include 'template/header.php'; ?>
+<?php include 'template/header.php'; ?>
 
 <body x-data="" class="is-header-blur" x-bind="$store.global.documentBody">
     <?php if (isset($_SESSION['message'])): ?>
@@ -29,68 +29,74 @@
 
         <!-- Main Content Wrapper -->
         <main class="main-content w-full pb-8">
-            <?php
-        include('config/db.php');
+        <?php
 
-        // SQL query to fetch data from the database
-        $sql = "SELECT * FROM tbl_house WHERE unit_available != 0";
-        $result = mysqli_query($con, $sql);
 
-        if (mysqli_num_rows($result) > 0) {
-          while ($row = mysqli_fetch_assoc($result)) {
-            $logoPath = !empty($row['Image']) ? "parakalan/uploads/" . $row['Image'] : "admin/uploads/default.png";
-        ?>
-            <div class="mt-4 pl-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 lg:mt-6">
-                <div class="rounded-l-lg bg-slate-150 pt-4 pb-1 dark:bg-navy-800">
+// SQL query to fetch data from the database
+$sql = "SELECT * FROM tbl_house WHERE unit_available != 0";
+$result = mysqli_query($con, $sql);
 
-                    <div class="mt-4 grid grid-cols-1 gap-4 px-4 pb-4 sm:grid-cols-2 sm:px-5 lg:grid-cols-4">
-                        <div class="flex flex-col">
-                            <img class="h-48 w-full rounded-2xl object-cover object-center"
-                                src="<?php echo htmlspecialchars($logoPath); ?>" alt="image">
-
-                            <div class="card mx-2 -mt-8 grow rounded-2xl p-3.5">
-                                <div class="flex space-x-2">
-                                    <div class="badge rounded-full bg-info py-1 uppercase text-white">
-                                        Avail
-                                    </div>
-                                    <div class="flex flex-wrap items-center font-inter text-xs uppercase">
-                                        <p> <?php echo htmlspecialchars($row['HouseSize']); ?> sqft</p>
-                                        <div class="mx-2 my-1 w-px self-stretch bg-slate-200 dark:bg-navy-500"></div>
-                                        <p> <?php echo htmlspecialchars($row['RoomNum']); ?> Beds</p>
-                                        <div class="mx-2 my-1 w-px self-stretch bg-slate-200 dark:bg-navy-500"></div>
-                                        <p> <?php echo htmlspecialchars($row['BathNum']); ?> Bath </p>
-
-                                    </div>
-                                </div>
-                                <div class="mt-2">
-                                    <a href="#"
-                                        class="text-sm+ font-medium text-slate-700 line-clamp-1 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light">Emerald
-                                        Bay Inn.</a>
-                                </div>
-                                <div class="flex items-end justify-between">
-                                    <p class="mt-2">
-                                        <span class="text-base font-medium text-slate-700 dark:text-navy-100">
-                                            ₱<?php echo htmlspecialchars($row['DownPayment']); ?></span>
-                                        <span class="text-xs text-slate-400 dark:text-navy-300">/Reservation fee</span>
-                                    </p>
-                                    <p class="flex shrink-0 items-center space-x-1">
-                                    <div x-data="{showModal:false, modalData: {}}">
-                                        <button @click="modalData = {
-        houseId: '<?php echo htmlspecialchars($row['HouseID']); ?>',
-        houseName: '<?php echo htmlspecialchars($row['HouseName']); ?>',
-        price: '<?php echo htmlspecialchars($row['Price']); ?>',
-        logoPath: '<?php echo htmlspecialchars($logoPath); ?>',
-        location: '<?php echo htmlspecialchars($row['Location']); ?>',
-        houseSize: '<?php echo htmlspecialchars($row['HouseSize']); ?>',
-        roomNum: '<?php echo htmlspecialchars($row['RoomNum']); ?>',
-        bathNum: '<?php echo htmlspecialchars($row['BathNum']); ?>',
-        downPayment: '<?php echo htmlspecialchars($row['DownPayment']); ?>',
-        description: '<?php echo htmlspecialchars($row['Description']); ?>'
-    }; showModal = true" class="btn size-8 p-1 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25 rounded-md">
-                                            <i class="fa fa-eye"></i>
-                                        </button>
-
-                                        <template x-teleport="#x-teleport-target">
+if (mysqli_num_rows($result) > 0) {
+    echo '<div class="mt-4 pl-[var(--margin-x)] transition-all duration-[.25s] sm:mt-5 lg:mt-6">';
+    echo '<div class="rounded-l-lg bg-slate-150 pt-4 pb-1 dark:bg-navy-800">';
+    echo '<div class="mt-4 grid grid-cols-1 gap-4 px-4 pb-4 sm:grid-cols-2 lg:grid-cols-4">';
+    
+    while ($row = mysqli_fetch_assoc($result)) {
+        $logoPath = !empty($row['Image']) ? "parakalan/uploads/" . $row['Image'] : "admin/uploads/default.png";
+?>
+        <div class="flex flex-col min-w-[300px] sm:min-w-[350px] md:min-w-[400px]">
+            <img class="h-48 w-full rounded-2xl object-cover object-center"
+                src="<?php echo htmlspecialchars($logoPath); ?>" alt="image">
+            <div class="card mx-2 -mt-8 grow rounded-2xl p-3.5 min-h-[180px]">
+                <div class="flex space-x-2">
+                    <div class="badge rounded-full bg-info py-1 uppercase text-white">Avail</div>
+                    <div class="flex flex-wrap items-center font-inter text-xs uppercase">
+                        <p><?php echo htmlspecialchars($row['HouseSize']); ?> sqft</p>
+                        <div class="mx-2 my-1 w-px self-stretch bg-slate-200 dark:bg-navy-500"></div>
+                        <p><?php echo htmlspecialchars($row['RoomNum']); ?> Beds</p>
+                        <div class="mx-2 my-1 w-px self-stretch bg-slate-200 dark:bg-navy-500"></div>
+                        <p><?php echo htmlspecialchars($row['BathNum']); ?> Bath</p>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <a href="#" class="text-sm+ font-medium text-slate-700 line-clamp-1 hover:text-primary"><?php echo htmlspecialchars($row['HouseName']); ?></a>
+                </div>
+                <div class="flex items-end justify-between">
+                    <p class="mt-2">
+                        <span class="text-base font-medium text-slate-700 dark:text-navy-100">
+                            ₱<?php echo htmlspecialchars($row['DownPayment']); ?>
+                        </span>
+                        <span class="text-xs text-slate-400 dark:text-navy-300">/Reservation fee</span>
+                    </p>
+                    <div x-data="{showModal:false, modalData: {}}">
+                        <button @click="modalData = {
+                            houseId: '<?php echo htmlspecialchars($row['HouseID']); ?>',
+                            houseName: '<?php echo htmlspecialchars($row['HouseName']); ?>',
+                            price: '<?php echo htmlspecialchars($row['Price']); ?>',
+                            logoPath: '<?php echo htmlspecialchars($logoPath); ?>',
+                            location: '<?php echo htmlspecialchars($row['Location']); ?>',
+                            houseSize: '<?php echo htmlspecialchars($row['HouseSize']); ?>',
+                            roomNum: '<?php echo htmlspecialchars($row['RoomNum']); ?>',
+                            bathNum: '<?php echo htmlspecialchars($row['BathNum']); ?>',
+                            downPayment: '<?php echo htmlspecialchars($row['DownPayment']); ?>',
+                            description: '<?php echo htmlspecialchars($row['Description']); ?>'
+                        }; showModal = true" class="btn size-8 p-1 text-info hover:bg-info/20 rounded-md">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+<?php
+    }
+    echo '</div>'; // Close grid
+    echo '</div>'; // Close rounded-l-lg
+    echo '</div>'; // Close mt-4
+} else {
+    echo "<div class='col-12 text-center'><p>No houses available.</p></div>";
+}
+?>
+    <template x-teleport="#x-teleport-target">
                                             <div class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
                                                 x-show="showModal" role="dialog" aria-modal="true"
                                                 @keydown.window.escape="showModal = false">
@@ -265,26 +271,6 @@
         </div>
     </div>
 </div>
-                                    </div>
-
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <?php
-          }
-        } else {
-          echo "<div class='col-12 text-center'><p>No houses available.</p></div>";
-        }
-        ?>
-
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-
 
     <!-- 
         This is a place for Alpine.js Teleport feature 
